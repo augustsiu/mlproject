@@ -1,15 +1,9 @@
 import sys
 import logging
+import src.logger
 
 
 def error_message_detail(error, error_detail: sys) -> str:
-    """
-    Creates a detailed error message that includes:
-    - the Python file where the error happened
-    - the line number
-    - the original error message
-    """
-
     _, _, exc_tb = error_detail.exc_info()
 
     file_name = exc_tb.tb_frame.f_code.co_filename
@@ -28,10 +22,6 @@ def error_message_detail(error, error_detail: sys) -> str:
 
 
 class CustomException(Exception):
-    """
-    Custom exception class that provides more detailed error information.
-    """
-
     def __init__(self, error_message, error_detail: sys):
         super().__init__(error_message)
 
@@ -43,11 +33,3 @@ class CustomException(Exception):
     def __str__(self):
         return self.error_message
 
-
-if __name__ == "__main__":
-    try:
-        a = 1 / 0
-
-    except Exception as e:
-        logging.info("Divide by Zero")
-        raise CustomException(e, error_detail=sys)
