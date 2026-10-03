@@ -12,10 +12,13 @@ def get_requirements(file_path: str) -> List[str]:
 
     with open(file_path) as file_obj:
         requirements = file_obj.readlines()
-        requirements = [req.replace("\n", "") for req in requirements]
+        requirements = [req.strip() for req in requirements]
 
-        if HYPHEN_E_DOT in requirements:
-            requirements.remove(HYPHEN_E_DOT)
+        # Skip blank lines, comments, and the editable-install marker
+        requirements = [
+            req for req in requirements
+            if req and not req.startswith("#") and req != HYPHEN_E_DOT
+        ]
 
     return requirements
 
